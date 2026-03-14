@@ -4,11 +4,7 @@ import time
 import matplotlib.pyplot as plt
 from multiprocessing import Pool
 
-
-# -------------------------------
 # Function: Apply convolution to a row
-# -------------------------------
-
 def process_row(args):
 
     gray, kernel, row = args
@@ -25,11 +21,7 @@ def process_row(args):
 
     return result_row
 
-
-# -------------------------------
 # Sequential Filter
-# -------------------------------
-
 def sequential_filter(img, kernel):
 
     gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
@@ -46,11 +38,7 @@ def sequential_filter(img, kernel):
 
     return output
 
-
-# -------------------------------
 # Parallel Filter
-# -------------------------------
-
 def parallel_filter(img, kernel):
 
     gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
@@ -71,11 +59,7 @@ def parallel_filter(img, kernel):
 
     return output
 
-
-# -------------------------------
 # Main Program
-# -------------------------------
-
 if __name__ == "__main__":
 
     # Load Image
@@ -90,11 +74,7 @@ if __name__ == "__main__":
     print("Image loaded successfully")
     print("Image shape:", image.shape)
 
-
-    # -------------------------------
     # Kernels
-    # -------------------------------
-
     blur_kernel = np.ones((3,3)) / 9
 
     sharpen_kernel = np.array([
@@ -109,11 +89,7 @@ if __name__ == "__main__":
         [-1,0,1]
     ])
 
-
-    # -------------------------------
     # Sequential Blur
-    # -------------------------------
-
     start = time.time()
 
     blur_seq = sequential_filter(image, blur_kernel)
@@ -122,11 +98,7 @@ if __name__ == "__main__":
 
     print("Sequential Blur Time:", seq_time)
 
-
-    # -------------------------------
     # Parallel Blur
-    # -------------------------------
-
     start = time.time()
 
     blur_par = parallel_filter(image, blur_kernel)
@@ -135,38 +107,24 @@ if __name__ == "__main__":
 
     print("Parallel Blur Time:", par_time)
 
-
     # Speedup
-
     speedup = seq_time / par_time
 
     print("Speedup:", speedup)
 
-
-    # -------------------------------
     # Other Filters (Parallel)
-    # -------------------------------
-
     sharpen_img = parallel_filter(image, sharpen_kernel)
 
     edge_img = parallel_filter(image, sobel_kernel)
 
-
-    # -------------------------------
     # Save Output Images
-    # -------------------------------
-
     cv2.imwrite("blur.jpg", blur_par)
     cv2.imwrite("sharpen.jpg", sharpen_img)
     cv2.imwrite("edges.jpg", edge_img)
 
     print("Processed images saved.")
 
-
-    # -------------------------------
     # Display Images
-    # -------------------------------
-
     plt.figure(figsize=(12,6))
 
     plt.subplot(1,3,1)
